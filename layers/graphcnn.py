@@ -4,6 +4,7 @@ import torch.nn.functional as F
 
 from layers.mlp import MLP
 
+# 这是作者修改过的代码，合理怀疑是看了DGI为了改DCI套的GIN
 class GraphCNN(nn.Module):
     def __init__(self, num_layers, num_mlp_layers, input_dim, hidden_dim, neighbor_pooling_type, device):
         '''
@@ -27,13 +28,14 @@ class GraphCNN(nn.Module):
         ###List of batchnorms applied to the output of MLP (input of the final prediction linear layer)
         self.batch_norms = torch.nn.ModuleList()
 
+        # 这里做了一个loop控制当前的model是输入层还是中间层
         for layer in range(self.num_layers):
             if layer == 0:
                 self.mlps.append(MLP(num_mlp_layers, input_dim, hidden_dim, hidden_dim))
             else:
                 self.mlps.append(MLP(num_mlp_layers, hidden_dim, hidden_dim, hidden_dim))
 
-            self.batch_norms.append(nn.BatchNorm1d(hidden_dim))
+            self.batch_norms.append(nn.BatchNorm1d(hidden_dim)) # 这句是输出层
 
     def next_layer(self, h, layer, padded_neighbor_list = None, Adj_block = None):
         ###pooling neighboring nodes and center nodes altogether  

@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 
+# 源代码是DGI的论文
 class Discriminator(nn.Module):
     def __init__(self, n_h):
         super(Discriminator, self).__init__()

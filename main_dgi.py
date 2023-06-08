@@ -122,9 +122,11 @@ def main():
     idx = np.random.permutation(nb_nodes)
     shuf_feats = feats[idx, :]
 
+    # 从这里开始DCI换成了CGI
     model_pretrain = DGI(args.num_layers, args.num_mlp_layers, input_dim, args.hidden_dim, args.neighbor_pooling_type, device).to(device)
     optimizer_train = optim.Adam(model_pretrain.parameters(), lr=args.lr)
 
+    # DCI的batch在model里
     batch_size = 1
     lbl_1 = torch.ones(batch_size, nb_nodes)
     lbl_2 = torch.zeros(batch_size, nb_nodes)

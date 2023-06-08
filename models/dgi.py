@@ -4,6 +4,7 @@ from layers import GraphCNN, AvgReadout, Discriminator
 import sys
 sys.path.append("models/")
 
+# 定义了一个继承NN的DGI
 class DGI(nn.Module):
     def __init__(self, num_layers, num_mlp_layers, input_dim, hidden_dim, neighbor_pooling_type, device):
         super(DGI, self).__init__()
@@ -14,7 +15,7 @@ class DGI(nn.Module):
 
     def forward(self, seq1, seq2, adj, msk, samp_bias1, samp_bias2, lbl):
         criterion = nn.BCEWithLogitsLoss()
-        h_1 = torch.unsqueeze(self.gin(seq1, adj), 0)
+        h_1 = torch.unsqueeze(self.gin(seq1, adj), 0)   # 后面这一整段很像lstm有没有，选择信息激活算损失
 
         c = self.read(h_1, msk)
         c = self.sigm(c)
