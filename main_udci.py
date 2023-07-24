@@ -78,7 +78,7 @@ def main():
                         help='name of dataset (default: wiki)')
     parser.add_argument('--device', type=int, default=0,
                         help='which gpu to use if any (default: 0)')
-    parser.add_argument('--epochs', type=int, default=50,
+    parser.add_argument('--epochs', type=int, default=1,
                         help='number of epochs to train (default: 50)')
     parser.add_argument('--num_layers', type=int, default=2,
                         help='number of layers (default: 2)')
