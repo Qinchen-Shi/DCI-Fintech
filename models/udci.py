@@ -19,7 +19,7 @@ class U_DCI(nn.Module):
         h_2 = self.ugcn(seq2, sadj, sadj2)  # shuffled feature
 
         loss = 0
-        batch_size = 1
+        batch_size = 1 # hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
         criterion = nn.BCEWithLogitsLoss() 
         for i in range(cluster_num):    #相比较DGI来说就是这里套了一个循环按cluster来跑的
             node_idx = cluster_info[i]  # cluster_info存的是每个cluster的信息
@@ -34,6 +34,7 @@ class U_DCI(nn.Module):
             lbl = torch.cat((lbl_1, lbl_2), 1).to(self.device)  # 把两个tensor拼接起来，变成batch_size*2*len(node_idx)，放到device上
 
             ret = self.disc(c_block, h_1_block, h_2_block, samp_bias1, samp_bias2)  # 用discriminator layer判断哪个特征属于哪类，应该是在做normal和abnormal的区分，ret可能是一个分数or概率
+            # print(f'ret_shape:{ret.shape}') ---> ret_shape:torch.Size([1, 10486])
             loss_tmp = criterion(ret, lbl)  # 用loss function计算loss，这里用的是BCEWithLogitsLoss，ret是分数，lbl是标签
             loss += loss_tmp
 

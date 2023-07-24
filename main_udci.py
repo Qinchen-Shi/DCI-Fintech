@@ -127,6 +127,8 @@ def main():
 
     model_pretrain = U_DCI(args.num_layers, args.num_mlp_layers, input_dim, args.hidden_dim, args.neighbor_pooling_type, device).to(device)
     optimizer_train = optim.Adam(model_pretrain.parameters(), lr=args.lr)
+
+
         
     for epoch in range(1, args.epochs + 1):
         model_pretrain.train()
