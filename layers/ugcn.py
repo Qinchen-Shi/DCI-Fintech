@@ -3,23 +3,23 @@ from layers.gat import GAT, Attention
 import torch
 
 class U_GCN(nn.Module):
-    def __init__(self, nfeat, nclass, nhid1, nhid2, dropout, alpha, nheads):
+    def __init__(self, in_features, nclass, out_features, final_features, dropout, alpha, nheads):
         super(U_GCN, self).__init__()
 
         # use GCN or GAT
-        self.SGAT1 = GAT(nfeat, nhid1, nhid2, dropout, alpha, nheads)
-        self.SGAT2 = GAT(nfeat, nhid1, nhid2, dropout, alpha, nheads)
+        self.SGAT1 = GAT(in_features, out_features, final_features, dropout, alpha, nheads)
+        self.SGAT2 = GAT(in_features, out_features, final_features, dropout, alpha, nheads)
+        self.attention = Attention(final_features)
 
-        self.dropout = dropout
-        self.a = nn.Parameter(torch.zeros(size=(nhid2, 1)))
-        nn.init.xavier_uniform_(self.a.data, gain=1.414)
-        self.attention = Attention(nhid2)
-        self.tanh = nn.Tanh()
-
-        self.MLP = nn.Sequential(
-            nn.Linear(nhid2, nclass),
-            nn.LogSoftmax(dim=1)
-        )
+        # self.dropout = dropout
+        # self.a = nn.Parameter(torch.zeros(size=(final_features, 1)))
+        # nn.init.xavier_uniform_(self.a.data, gain=1.414)
+        
+        # self.tanh = nn.Tanh()
+        # self.MLP = nn.Sequential(
+        #     nn.Linear(final_features, nclass),
+        #     nn.LogSoftmax(dim=1)
+        # )
 
     def forward(self, x, sadj, sadj2):
         emb1 = self.SGAT1(x, sadj) 

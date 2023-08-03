@@ -9,7 +9,8 @@ class U_DCI(nn.Module):
         super(U_DCI, self).__init__()
         self.device = device
         # self.gat = GAT(nfeat, nhid1, nhid2, dropout, alpha, nheads) # 自定义的GAT model，暂时先用固定参数，nfeat是1703是什么鬼
-        self.ugcn = U_GCN(64, 64, 64, 16, 0.6, 0.2, 8)
+        self.ugcn = U_GCN(64, 64, 16, 0.6, 0.2, 8)
+        # self.ugcn = U_GCN(in_features, out_features, final_features, dropout, alpha, nheads)
         self.read = AvgReadout()
         self.sigm = nn.Sigmoid()
         self.disc = Discriminator(hidden_dim)

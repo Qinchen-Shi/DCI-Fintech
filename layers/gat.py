@@ -5,16 +5,16 @@ from layers.graphattention import GraphAttention
 
 
 class GAT(nn.Module):
-    def __init__(self, nfeat, nhid, nclass, dropout, alpha, nheads):
+    def __init__(self, in_features, out_features, final_features, dropout, alpha, nheads):
         """Dense version of GAT."""
         super(GAT, self).__init__()
         self.dropout = dropout
 
-        self.attentions = [GraphAttention(nfeat, nhid, dropout=dropout, alpha=alpha, concat=True) for _ in range(nheads)]
+        self.attentions = [GraphAttention(in_features, out_features, dropout=dropout, alpha=alpha, concat=True) for _ in range(nheads)]
         for i, attention in enumerate(self.attentions):
             self.add_module('attention_{}'.format(i), attention)
 
-        self.out_att = GraphAttention(nhid * nheads, nclass, dropout=dropout, alpha=alpha, concat=False)
+        self.out_att = GraphAttention(out_features * nheads, final_features, dropout=dropout, alpha=alpha, concat=False)
 
     def forward(self, x, adj):
         x = F.dropout(x, self.dropout, training=self.training)
